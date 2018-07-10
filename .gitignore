@@ -1,0 +1,7 @@
+resources/css/*.map
+resources/js/creative.min.js
+vendor/font-awesome
+vendor/jquery-easing
+vendor/magnific-popup
+vendor/scrollreveal
+vendor/jquery.min.js

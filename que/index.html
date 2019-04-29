@@ -108,7 +108,6 @@
     }
 
   </style>
-  <script type="text/javascript" src="nix.php"></script>
 </head>
 <body>
 	<h3>Demo</h3>
@@ -127,7 +126,7 @@
 	
 	<script>
     $.ajax({
-      url:"http://mcc.unaux.com/que/nix.php", 
+      url:"https://mcc.unaux.com/que/nix.php", 
       success:function(data){
         //console.log(data.length);
         if (typeof(data) == "string") var data = JSON.parse(data);
@@ -149,7 +148,7 @@
     document.querySelector("#iform").onsubmit = function(e){
       e.preventDefault();
       $.ajax({
-        url:"http://mcc.unaux.com/que/submit.php",
+        url:"https://mcc.unaux.com/que/submit.php",
         data: $("#iform").serialize(), 
         method:"post",
         success:function(data){

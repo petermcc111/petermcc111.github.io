@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta name="description" content="Questions Demo" />
+  <meta name="author" content="Peter Chau" /-->
+  <title>Questions</title>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet" />
+  <style>
+  	.question{
+  		width:100%;
+  	}
+    .controlarea {
+      display: flex;
+      align-items:center;
+    }
+    .disp {
+      font-size: 1.5rem;
+      font-weight: bold;
+      margin-left: 0.25rem;
+    }
+    input[type=range] {
+      -webkit-appearance: none;
+      width: 50%;
+      vertical-align: middle;
+      margin: 0;
+    }
+    input[type=range]:focus {
+      outline: none;
+    }
+    input[type=range]::-webkit-slider-runnable-track {
+      width: 100%;
+      height: 8.4px;
+      cursor: pointer;
+      box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+      background: #3071a9;
+      border-radius: 1.3px;
+      border: 0.2px solid #010101;
+    }
+    input[type=range]::-webkit-slider-thumb {
+      box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+      border: 1px solid #000000;
+      height: 36px;
+      width: 16px;
+      border-radius: 3px;
+      background: #ffffff;
+      cursor: pointer;
+      -webkit-appearance: none;
+      margin-top: -14px;
+    }
+    input[type=range]:focus::-webkit-slider-runnable-track {
+      background: #367ebd;
+    }
+    input[type=range]::-moz-range-track {
+      width: 100%;
+      height: 8.4px;
+      cursor: pointer;
+      box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+      background: #3071a9;
+      border-radius: 1.3px;
+      border: 0.2px solid #010101;
+    }
+    input[type=range]::-moz-range-thumb {
+      box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+      border: 1px solid #000000;
+      height: 36px;
+      width: 16px;
+      border-radius: 3px;
+      background: #ffffff;
+      cursor: pointer;
+    }
+    input[type=range]::-ms-track {
+      width: 100%;
+      height: 8.4px;
+      cursor: pointer;
+      background: transparent;
+      border-color: transparent;
+      color: transparent;
+    }
+    input[type=range]::-ms-fill-lower {
+      background: #2a6495;
+      border: 0.2px solid #010101;
+      border-radius: 2.6px;
+      box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+    }
+    input[type=range]::-ms-fill-upper {
+      background: #3071a9;
+      border: 0.2px solid #010101;
+      border-radius: 2.6px;
+      box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+    }
+    input[type=range]::-ms-thumb {
+      box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+      border: 1px solid #000000;
+      height: 36px;
+      width: 16px;
+      border-radius: 3px;
+      background: #ffffff;
+      cursor: pointer;
+      height: 8.4px;
+    }
+    input[type=range]:focus::-ms-fill-lower {
+      background: #3071a9;
+    }
+    input[type=range]:focus::-ms-fill-upper {
+      background: #367ebd;
+    }
+
+  </style>
+  <script type="text/javascript" src="nix.php"></script>
+</head>
+<body>
+	<h3>Demo</h3>
+	<form id="iform" method="post" action="submit.php" target="_self">
+
+
+  	<ol id="ext">
+  		
+  	</ol>
+    <input type="submit" value="Confirm" />
+  </form>
+  <div id="result"></div>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<!--<script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
+	<script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>-->
+	
+	<script>
+    $.ajax({
+      url:"http://mcc.unaux.com/que/nix.php", 
+      success:function(data){
+        //console.log(data.length);
+        if (typeof(data) == "string") var data = JSON.parse(data);
+        doRender(data,5);
+      }
+    });
+
+    function doRender(data,dn){
+      data.map(function(dx,i){
+        document.querySelector("#ext").innerHTML += '<li class="question" id="q'+dx.qid+'"><div>'+dx.detail+'</div><div class="controlarea"><input type="range" ref="'+dx.qid+'" name="q'+dx.qid+'" min="1" max="10" value="'+dn+'"" /><span class="disp" id="qval'+dx.qid+'" style="font-size:"1.5rem">'+dn+'</span></div></li>';
+
+      })
+
+    }
+    document.querySelector("#ext").oninput = function(e){
+      //console.log(e.target.getAttribute("ref")+" : "+e.target.value);
+      document.querySelector("#qval"+e.target.getAttribute("ref")).innerHTML = e.target.value;
+    }
+    document.querySelector("#iform").onsubmit = function(e){
+      e.preventDefault();
+      $.ajax({
+        url:"http://mcc.unaux.com/que/submit.php",
+        data: $("#iform").serialize(), 
+        method:"post",
+        success:function(data){
+          //console.log(data.length);
+          //if (typeof(data) == "string") var data = JSON.parse(data);
+          document.querySelector("#result").innerHTML = data;
+        }
+      });
+    }
+	</script>
+	
+</body>
+</html>
